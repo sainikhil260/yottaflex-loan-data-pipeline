@@ -1,0 +1,84 @@
+table_name,column_name,data_type,required,primary_key,unique,foreign_key,references,units,allowed_values,default_value,validation_notes
+affordability_checks,check_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+affordability_checks,application_id,TEXT,Yes,No,No,Yes,loan_applications.application_id,,,,Foreign key references loan_applications.application_id
+affordability_checks,monthly_income,REAL,Yes,No,No,No,,INR,,,Must be greater than zero for affordability checks
+affordability_checks,existing_monthly_debt,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+affordability_checks,proposed_monthly_payment,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+affordability_checks,dti_ratio,REAL,Yes,No,No,No,,Decimal ratio; e.g. 0.18 = 18%,,,Non-negative ratio; compare with configured DTI threshold; High debt burden when above configured threshold
+affordability_checks,affordable,INTEGER,Yes,No,No,No,,,"0 = No, 1 = Yes",,"Allowed values: 0 = No, 1 = Yes"
+affordability_checks,checked_at,TEXT,Yes,No,No,No,,,,,Validate timestamp format and chronological consistency
+anomaly_labels,anomaly_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+anomaly_labels,application_id,TEXT,Yes,No,No,Yes,loan_applications.application_id,,,,Foreign key references loan_applications.application_id
+anomaly_labels,issue_type,TEXT,Yes,No,No,No,,,"MISSING_INCOME_PROOF, HIGH_DEBT_BURDEN, UNSTABLE_EMPLOYMENT, BORDERLINE_CREDIT_SCORE, DUPLICATE_APPLICATION",,"Allowed values: MISSING_INCOME_PROOF, HIGH_DEBT_BURDEN, UNSTABLE_EMPLOYMENT, BORDERLINE_CREDIT_SCORE, DUPLICATE_APPLICATION"
+anomaly_labels,ground_truth,INTEGER,Yes,No,No,No,,,"0 = Not an anomaly, 1 = Anomaly",,"Allowed values: 0 = Not an anomaly, 1 = Anomaly; Ground-truth target; exclude from predictive input features"
+anomaly_labels,details,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+applicants,applicant_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+applicants,full_name,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+applicants,date_of_birth,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+applicants,city,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+applicants,created_at,TEXT,Yes,No,No,No,,,,,Validate timestamp format and chronological consistency
+applicants,credit_score,INTEGER,No,No,No,No,,Synthetic credit-score points; range 300–900,,,Integer between 300 and 900
+application_events,event_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+application_events,application_id,TEXT,Yes,No,No,Yes,loan_applications.application_id,,,,Foreign key references loan_applications.application_id
+application_events,event_type,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+application_events,old_status,TEXT,No,No,No,No,,,,,Validate against applicable business rules
+application_events,new_status,TEXT,No,No,No,No,,,,,Validate against applicable business rules
+application_events,event_details,TEXT,No,No,No,No,,,,,Validate against applicable business rules
+application_events,occurred_at,TEXT,Yes,No,No,No,,,,,Validate timestamp format and chronological consistency
+credit_facilities,facility_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+credit_facilities,applicant_id,TEXT,Yes,No,No,Yes,applicants.applicant_id,,,,Foreign key references applicants.applicant_id
+credit_facilities,facility_type,TEXT,Yes,No,No,No,,,"PERSONAL_LOAN, CAR_LOAN, CREDIT_CARD",,"Allowed values: PERSONAL_LOAN, CAR_LOAN, CREDIT_CARD"
+credit_facilities,outstanding_balance,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+credit_facilities,monthly_payment,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+credit_facilities,credit_status,TEXT,Yes,No,No,No,,,ACTIVE,,Allowed values: ACTIVE
+credit_facilities,effective_from,TEXT,Yes,No,No,No,,,,,Validate date format and effective-date ordering
+credit_facilities,effective_to,TEXT,No,No,No,No,,,,,Validate date format and effective-date ordering
+credit_facilities,credit_score,INTEGER,No,No,No,No,,Synthetic credit-score points; range 300–900,,,Integer between 300 and 900
+decisions,decision_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+decisions,application_id,TEXT,Yes,No,No,Yes,loan_applications.application_id,,,,Foreign key references loan_applications.application_id
+decisions,decision_status,TEXT,Yes,No,No,No,,,"APPROVED, REJECTED, MANUAL_REVIEW",,"Allowed values: APPROVED, REJECTED, MANUAL_REVIEW"
+decisions,decision_reason,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+decisions,decided_at,TEXT,Yes,No,No,No,,,,,Validate timestamp format and chronological consistency
+decisions,reviewer_type,TEXT,Yes,No,No,No,,,RULE_ENGINE,,Allowed values: RULE_ENGINE
+documents,document_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+documents,application_id,TEXT,Yes,No,No,Yes,loan_applications.application_id,,,,Foreign key references loan_applications.application_id
+documents,document_type,TEXT,Yes,No,No,No,,,"IDENTITY_PROOF, INCOME_PROOF, BANK_STATEMENT",,"Allowed values: IDENTITY_PROOF, INCOME_PROOF, BANK_STATEMENT"
+documents,document_status,TEXT,Yes,No,No,No,,,"SUBMITTED, VERIFIED, REJECTED, MISSING",,"Allowed values: SUBMITTED, VERIFIED, REJECTED, MISSING"
+documents,submitted_at,TEXT,No,No,No,No,,,,,Validate timestamp format and chronological consistency
+documents,verified_at,TEXT,No,No,No,No,,,,,Validate timestamp format and chronological consistency
+employment,employment_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+employment,applicant_id,TEXT,Yes,No,No,Yes,applicants.applicant_id,,,,Foreign key references applicants.applicant_id
+employment,employer_name,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+employment,employment_type,TEXT,Yes,No,No,No,,,"FULL_TIME, CONTRACT, PART_TIME",,"Allowed values: FULL_TIME, CONTRACT, PART_TIME"
+employment,start_date,TEXT,Yes,No,No,No,,,,,Validate date format and effective-date ordering
+employment,end_date,TEXT,No,No,No,No,,,,,Validate date format and effective-date ordering
+employment,employment_status,TEXT,Yes,No,No,No,,,"ACTIVE, UNSTABLE",,"Allowed values: ACTIVE, UNSTABLE"
+income_records,income_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+income_records,applicant_id,TEXT,Yes,No,No,Yes,applicants.applicant_id,,,,Foreign key references applicants.applicant_id
+income_records,monthly_income,REAL,Yes,No,No,No,,INR,,,Must be greater than zero for affordability checks
+income_records,income_source,TEXT,Yes,No,No,No,,,"SALARY, BUSINESS, CONTRACT",,"Allowed values: SALARY, BUSINESS, CONTRACT"
+income_records,verification_status,TEXT,Yes,No,No,No,,,"VERIFIED, UNVERIFIED",,"Allowed values: VERIFIED, UNVERIFIED"
+income_records,effective_from,TEXT,Yes,No,No,No,,,,,Validate date format and effective-date ordering
+income_records,effective_to,TEXT,No,No,No,No,,,,,Validate date format and effective-date ordering
+loan_applications,application_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+loan_applications,applicant_id,TEXT,Yes,No,No,Yes,applicants.applicant_id,,,,Foreign key references applicants.applicant_id
+loan_applications,product_id,TEXT,Yes,No,No,Yes,loan_products.product_id,,,,Foreign key references loan_products.product_id
+loan_applications,principal,REAL,Yes,No,No,No,,INR,,,Validate against the selected loan product's limits
+loan_applications,term_months,INTEGER,Yes,No,No,No,,"Months or installment count, as applicable",,,Validate against the selected loan product's term limits
+loan_applications,application_status,TEXT,Yes,No,No,No,,,,,Validate against applicable business rules
+loan_applications,applied_at,TEXT,Yes,No,No,No,,,,,Validate timestamp format and chronological consistency
+loan_products,product_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+loan_products,product_name,TEXT,Yes,No,Yes,No,,,,,Validate against applicable business rules
+loan_products,min_principal,REAL,Yes,No,No,No,,INR,,,Validate against the selected loan product's limits
+loan_products,max_principal,REAL,Yes,No,No,No,,INR,,,Validate against the selected loan product's limits
+loan_products,annual_interest_rate,REAL,Yes,No,No,No,,Decimal ratio; e.g. 0.18 = 18%,,,Validate against applicable business rules
+loan_products,min_term_months,INTEGER,Yes,No,No,No,,"Months or installment count, as applicable",,,Validate against the selected loan product's term limits
+loan_products,max_term_months,INTEGER,Yes,No,No,No,,"Months or installment count, as applicable",,,Validate against the selected loan product's term limits
+repayment_schedules,schedule_id,TEXT,Yes,Yes,Yes,No,,,,,Primary key; unique and non-null
+repayment_schedules,application_id,TEXT,Yes,No,Yes,Yes,loan_applications.application_id,,,,Foreign key references loan_applications.application_id
+repayment_schedules,installment_number,INTEGER,Yes,No,Yes,No,,"Months or installment count, as applicable",,,Validate against applicable business rules
+repayment_schedules,due_date,TEXT,Yes,No,No,No,,,,,Validate timestamp format and chronological consistency
+repayment_schedules,principal_component,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+repayment_schedules,interest_component,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+repayment_schedules,total_payment,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules
+repayment_schedules,remaining_balance,REAL,Yes,No,No,No,,INR,,,Validate against applicable business rules

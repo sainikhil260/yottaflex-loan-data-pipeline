@@ -1,0 +1,5 @@
+product_id,product_name,min_principal,max_principal,annual_interest_rate,min_term_months,max_term_months
+PROD-001,Personal Loan,10000.0,500000.0,0.18,6,60
+PROD-002,Education Loan,25000.0,1500000.0,0.1,12,120
+PROD-003,Home Improvement Loan,50000.0,1000000.0,0.12,12,84
+PROD-004,Small Business Loan,50000.0,2000000.0,0.16,6,60

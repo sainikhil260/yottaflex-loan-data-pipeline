@@ -1,0 +1,38 @@
+[
+  {
+    "product_id": "PROD-001",
+    "product_name": "Personal Loan",
+    "min_principal": 10000.0,
+    "max_principal": 500000.0,
+    "annual_interest_rate": 0.18,
+    "min_term_months": 6,
+    "max_term_months": 60
+  },
+  {
+    "product_id": "PROD-002",
+    "product_name": "Education Loan",
+    "min_principal": 25000.0,
+    "max_principal": 1500000.0,
+    "annual_interest_rate": 0.1,
+    "min_term_months": 12,
+    "max_term_months": 120
+  },
+  {
+    "product_id": "PROD-003",
+    "product_name": "Home Improvement Loan",
+    "min_principal": 50000.0,
+    "max_principal": 1000000.0,
+    "annual_interest_rate": 0.12,
+    "min_term_months": 12,
+    "max_term_months": 84
+  },
+  {
+    "product_id": "PROD-004",
+    "product_name": "Small Business Loan",
+    "min_principal": 50000.0,
+    "max_principal": 2000000.0,
+    "annual_interest_rate": 0.16,
+    "min_term_months": 6,
+    "max_term_months": 60
+  }
+]
