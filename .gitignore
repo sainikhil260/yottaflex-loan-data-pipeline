@@ -1,0 +1,21 @@
+
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.env
+
+# SQLite databases and backups
+data/*.db
+data/*.db-*
+data/**/*.db
+data/**/*.db-*
+
+# Generated dataset exports
+data/exports/
+data/json/
+data/full_exports/
+data/full_json/
+data/starter_exports_backup/
+data/starter_json_backup/
+
